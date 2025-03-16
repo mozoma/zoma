@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لعبة الأسئلة</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; direction: rtl; background-color: #f4f4f4; }
+        .container { width: 50%; margin: auto; padding: 20px; background: white; border: 2px solid black; border-radius: 10px; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2); }
+        .option { display: block; margin: 10px; padding: 10px; background: #007bff; color: white; border: none; cursor: pointer; border-radius: 5px; transition: 0.3s; }
+        .option:hover { background: #0056b3; }
+        .correct { background: lightgreen !important; }
+        .wrong { background: lightcoral !important; }
+        #result { font-weight: bold; margin-top: 15px; font-size: 18px; color: green; transition: 0.5s; }
+        .celebration { animation: blink 1s infinite alternate; }
+        @keyframes blink { from { opacity: 1; } to { opacity: 0.5; } }
+        button { padding: 10px 20px; margin-top: 20px; border: none; background: #28a745; color: white; cursor: pointer; border-radius: 5px; transition: 0.3s; }
+        button:hover { background: #218838; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 id="question">سؤال هنا</h2>
+        <div id="options"></div>
+        <p id="result"></p>
+        <button onclick="nextQuestion()">السؤال التالي</button>
+    </div>
+
+    <script>
+        const questions = [
+            { question: "Choose the correct reflexive pronoun: We washed …………………….and then had our dinner.", options: ["myself", "himself", "herself", "ourselves"], answer: "ourselves" },
+            { question: "Choose the correct conditional sentence: If I ………..you, I wouldn't tell her.", options: ["am", "were", "will be", "had been"], answer: "were" },
+            { question: "Choose the correct tag question: You have read all Pushkin’s books, ………………?", options: ["not you", "have you", "haven’t you", "aren’t you"], answer: "haven’t you" },
+            { question: "What is the capital of Germany?", options: ["Berlin", "Madrid", "Rome", "Paris"], answer: "Berlin" },
+            { question: "Which planet is known as the Red Planet?", options: ["Mars", "Venus", "Jupiter", "Saturn"], answer: "Mars" },
+            { question: "What is the largest ocean on Earth?", options: ["Pacific", "Atlantic", "Indian", "Arctic"], answer: "Pacific" },
+            { question: "The Earth is flat.", options: ["True", "False"], answer: "False" },
+            { question: "The human body has 206 bones.", options: ["True", "False"], answer: "True" },
+            { question: "Water boils at 90°C.", options: ["True", "False"], answer: "False" }
+        ];
+
+        for (let i = 10; i <= 150; i++) {
+            questions.push({ question: `General Knowledge Question ${i}?`, options: ["Option 1", "Option 2", "Option 3", "Option 4"], answer: "Option 1" });
+        }
+
+        let currentQuestion = 0;
+
+        function loadQuestion() {
+            const q = questions[currentQuestion];
+            document.getElementById("question").textContent = q.question;
+            document.getElementById("options").innerHTML = "";
+            document.getElementById("result").textContent = "";
+            document.getElementById("result").classList.remove("celebration");
+            
+            q.options.forEach(option => {
+                const btn = document.createElement("button");
+                btn.textContent = option;
+                btn.className = "option";
+                btn.onclick = () => checkAnswer(option, btn);
+                document.getElementById("options").appendChild(btn);
+            });
+        }
+
+        function checkAnswer(answer, btn) {
+            if (answer === questions[currentQuestion].answer) {
+                btn.classList.add("correct");
+                document.getElementById("result").textContent = "إن شاء الله ندي خالد في كلية فنون جميلة!";
+                document.getElementById("result").classList.add("celebration");
+            } else {
+                btn.classList.add("wrong");
+                document.getElementById("result").textContent = "إجابة خاطئة، حاول مرة أخرى!";
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                alert("تم الانتهاء من الأسئلة! شكرًا لمشاركتك؟");
+            }
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>
